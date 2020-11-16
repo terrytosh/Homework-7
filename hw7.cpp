@@ -9,7 +9,7 @@ list_t differenceOfTwoList(list_t list_1, list_t list_2);
 bool isPrime(int num);
 
 int main() {
-  /*
+
   //hash test input
   list_t input = list_make();
   std::cout << "New hash input: ";
@@ -33,7 +33,7 @@ int main() {
   list_print(diff);
 
   std::cout << "\n";
-*/
+
   //hash test 2 input
   list_t input2 = list_make();
   std::cout << "New hash input 2: ";
@@ -105,10 +105,6 @@ list_t hashTestTwo(list_t list) {
     }
     odds = list_rest(odds);
   }
-  list_print(odds);
-  std::cout <<"\n";
-  list_print(odds_no_primes);
-  std::cout << "\n";
   int sum_odds = sum_list(odds_no_primes);
   while (!list_isEmpty(list)) {
     if (list_first(list) % 2 != 0) {
@@ -116,7 +112,7 @@ list_t hashTestTwo(list_t list) {
       newHashList = list_make(newKey, newHashList);
     }
     else {
-      int newKey = sum_odds + list_first(list);
+      int newKey = sum_odds + list_first(list) + 49;
       newHashList = list_make(newKey, newHashList);
     }
     list = list_rest(list);
