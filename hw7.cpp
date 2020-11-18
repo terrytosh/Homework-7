@@ -1,3 +1,75 @@
+/*
+NOTE: Changed sum(list_t list) -> sum_list(list_t list)
+Already autograded by HW4 back when it was due so shouldn't matter
+-------Pseudocode-------
+readInput():
+Read user input into a list_t list passed by reference
+
+hashTestOne():
+Initalize empty list_t newHashList
+Initalize sum to sum(list)
+while list not empty:
+Initalize newKey to fib(current key) + sum
+Add newKey to newHashList
+Pop list
+Return newHashList
+
+hashTestTwo():
+Initalize output to empty list
+Initalize temp to the odd keys in list
+Initalize hashOdd to empty list
+Initalize oddProduct to product(temp) and ctr to 0
+while temp list is not empty:
+  Initalize newKey to oddProduct + curent key value and insert into hashOdd
+  Advance to next list key
+  Increment ctr
+if hashOdd is not empty:
+  while ctr > 0 (loop through every value):
+    if current value is prime:
+      remove it
+    rotate hashOdd list forward
+    decrement ctr
+Initalize sumOdd to 0
+if hashOdd isn't empty:
+  set sumOdd to sum(hashOdd)
+while list is not empty:
+  if current key is odd:
+    Initalize newKey to oddProduct + key and add to output list
+  else if its even:
+    Initalize newKey to sumOdd + key and add to output list
+  advance list
+return output list
+
+differenceOfTwoList():
+Initalize output to empty list
+while list1 and list1 are not empty:
+  Initialize absDiff to adsolute difference of current value 
+  of list1 and list2.
+  Add absDiff to output list
+  Advance list1 and list2
+Return output list
+
+isPrime():
+Intialize a bool flag to true
+if num is 0 or 1:
+  set flag to false
+else:
+  loop from i = 2 to num / 2:
+    if num is divisible by i:
+      set flag to false
+      break from loop
+return flag
+
+countCollisions():
+Initialize empty unordered_set uSet and output to 0
+while list is not empty:
+  if current key is not in set:
+    add key to set
+  else:
+    increment output by 1
+  advance list to next element
+return output
+*/
 #include "hw4.h"
 #include <iostream>
 #include <sstream>
@@ -11,7 +83,6 @@ bool isPrime(int num);
 int countCollisions(list_t list);
 
 int main() {
-
   //hash test input
   list_t input = list_make();
   std::cout << "New hash input: ";
@@ -68,7 +139,6 @@ int main() {
   std::cout << "--Hash #2--" << "\n";
   std::cout << "new_code: " << col2 << "\n";
   std::cout << "old_code: " << oldCol2 << "\n";
-
   return 0;
 }
 
@@ -106,29 +176,42 @@ list_t differenceOfTwoList(list_t list_1, list_t list_2) {
 }
 
 list_t hashTestTwo(list_t list) {
-  list_t newHashList = list_make();
-  list_t odds = filter_odd(list);
-  list_t odds_no_primes = filter_odd(list);
-  int odds_product = product(odds);
-  while (!list_isEmpty(odds)) {
-    if (isPrime(list_first(odds))) {
-      odds_no_primes = list_rest(odds_no_primes);
-    }
-    odds = list_rest(odds);
+  list_t output = list_make();
+  list_t temp = filter_odd(list);
+  list_t hashOdd = list_make();
+  int oddProduct = product(temp);
+  int ctr = 0;
+  while (!list_isEmpty(temp)) {
+    int newKey = oddProduct + list_first(temp);
+    hashOdd = list_make(newKey, hashOdd);
+    temp = list_rest(temp);
+    ctr++;
   }
-  int sum_odds = sum_list(odds_no_primes);
+  if (!list_isEmpty(hashOdd)) {
+    while (ctr > 0) {
+      if (isPrime(list_first(hashOdd))) {
+        hashOdd = list_rest(hashOdd);
+      }
+      hashOdd = rotate(hashOdd, 1);
+      ctr--;
+    }
+  }
+  int sumOdd = 0;
+  if (!list_isEmpty(hashOdd)) {
+    sumOdd = sum_list(hashOdd);
+  }
   while (!list_isEmpty(list)) {
     if (list_first(list) % 2 != 0) {
-      int newKey = odds_product + list_first(list);
-      newHashList = list_make(newKey, newHashList);
+      int newKey = oddProduct + list_first(list);
+      output = list_make(newKey, output);
     }
     else {
-      int newKey = sum_odds + list_first(list) + 49;
-      newHashList = list_make(newKey, newHashList);
+      int newKey = sumOdd + list_first(list);
+      output = list_make(newKey, output);
     }
     list = list_rest(list);
   }
-  return reverse(newHashList);
+  return reverse(output);
 }
 
 bool isPrime(int num) {
