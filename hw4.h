@@ -3,7 +3,7 @@
 
 #include "recursive.h"
 
-int sum_list(list_t list);
+int sum(list_t list);
     /* 
     // EFFECTS: returns the sum of each element in list
     //          zero if the list is empty.

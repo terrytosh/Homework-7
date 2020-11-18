@@ -1,6 +1,4 @@
 /*
-NOTE: Changed sum(list_t list) -> sum_list(list_t list)
-Already autograded by HW4 back when it was due so shouldn't matter
 -------Pseudocode-------
 readInput():
 Read user input into a list_t list passed by reference
@@ -155,9 +153,9 @@ void readInput(list_t &list) {
 
 list_t hashTestOne(list_t list) {
   list_t newHashList = list_make();
-  int sum = sum_list(list);
+  int sumList = sum(list);
   while (!list_isEmpty(list)) {
-    int newKey = fib(list_first(list)) + sum;
+    int newKey = fib(list_first(list)) + sumList;
     newHashList = list_make(newKey, newHashList);
     list = list_rest(list);
   }
@@ -198,7 +196,7 @@ list_t hashTestTwo(list_t list) {
   }
   int sumOdd = 0;
   if (!list_isEmpty(hashOdd)) {
-    sumOdd = sum_list(hashOdd);
+    sumOdd = sum(hashOdd);
   }
   while (!list_isEmpty(list)) {
     if (list_first(list) % 2 != 0) {

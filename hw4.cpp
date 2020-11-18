@@ -200,7 +200,7 @@ int accumulate(list_t l, int (*fn)(int, int), int base) {
   }
 }
 
-int sum_list(list_t list) {
+int sum(list_t list) {
   return sumHelper(list, 0);
 }
 
