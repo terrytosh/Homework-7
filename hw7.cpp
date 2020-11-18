@@ -1,12 +1,14 @@
 #include "hw4.h"
 #include <iostream>
 #include <sstream>
+#include <unordered_set>
 
 void readInput(list_t &list);
 list_t hashTestOne(list_t list);
 list_t hashTestTwo(list_t list);
 list_t differenceOfTwoList(list_t list_1, list_t list_2);
 bool isPrime(int num);
+int countCollisions(list_t list);
 
 int main() {
 
@@ -24,14 +26,12 @@ int main() {
   list_t newHash = hashTestOne(input);
   std::cout << "New hash keys: ";
   list_print(newHash);
-
   std::cout << "\n";
 
   //testing differenceOfTwoList
   list_t diff = differenceOfTwoList(newHash, output);
   std::cout << "Difference: ";
   list_print(diff);
-
   std::cout << "\n";
 
   //hash test 2 input
@@ -48,15 +48,26 @@ int main() {
   list_t newHash2 = hashTestTwo(input2);
   std::cout << "New hash keys 2: ";
   list_print(newHash2);
-
   std::cout << "\n";
 
   //testing differenceOfTwoList
   list_t diff2 = differenceOfTwoList(newHash2, output2);
   std::cout << "Difference 2: ";
   list_print(diff2);
-
   std::cout << "\n";
+
+  //testing countCollisions
+  int col = countCollisions(newHash);
+  int oldCol = countCollisions(output);
+  int col2 = countCollisions(newHash2);
+  int oldCol2 = countCollisions(output2);
+  std::cout << "---Collision Count---" << "\n";
+  std::cout << "--Hash #1--" << "\n";
+  std::cout << "new_code: " << col << "\n";
+  std::cout << "old_code: " << oldCol << "\n";
+  std::cout << "--Hash #2--" << "\n";
+  std::cout << "new_code: " << col2 << "\n";
+  std::cout << "old_code: " << oldCol2 << "\n";
 
   return 0;
 }
@@ -134,4 +145,19 @@ bool isPrime(int num) {
     }
   }
   return flag;
+}
+
+int countCollisions(list_t list) {
+  std::unordered_set<int> uSet;
+  int output = 0;
+  while (!list_isEmpty(list)) {
+    if (uSet.find(list_first(list)) == uSet.end()) {
+      uSet.insert(list_first(list));
+    }
+    else {
+      output += 1;
+    }
+    list = list_rest(list);
+  }
+  return output;
 }
